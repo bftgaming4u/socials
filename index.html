@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Social Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- ── HERO ─────────────────────────────────────── -->
+    <header class="hero">
+        <!--
+      BANNER: Replace src with "assets/banner.png" when ready.
+      Recommended size: 2048×1152 px.
+      The placeholder below keeps layout intact until then.
+    -->
+        <div class="banner-wrap">
+            <img id="banner-img" src="assets/banner.jpg" alt="Banner" class="banner"
+                onerror="this.src='assets/banner_placeholder.svg'; this.onerror=null;" />
+            <div class="banner-overlay"></div>
+        </div>
+
+        <!--
+      LOGO: Replace src with "assets/logo.jpg" (or .png) when ready.
+      Recommended size: 98×98 px (will be displayed at exactly 98×98).
+    -->
+        <div class="profile">
+            <div class="avatar-ring">
+                <img id="logo-img" src="assets/logo.jpg" alt="Profile" class="logo"
+                    onerror="this.src='assets/logo_placeholder.svg'; this.onerror=null;" />
+            </div>
+            <h1 class="display-name">BFT Gaming</h1>
+            <p class="tagline">Content Creator · Streamer · Community</p>
+        </div>
+    </header>
+
+    <!-- ── SOCIAL GRID ───────────────────────────────── -->
+    <main>
+        <div id="social-container" class="grid"></div>
+    </main>
+
+    <!-- ── MUSIC TOGGLE ──────────────────────────────── -->
+    <button id="music-toggle" aria-label="Toggle music">
+        <span id="music-icon">🔇</span>
+    </button>
+    <audio id="bg-music" loop>
+        <source src="assets/music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

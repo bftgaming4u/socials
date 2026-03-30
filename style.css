@@ -1,0 +1,419 @@
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════ */
+:root {
+    --bg: #04080f;
+    --surface: #0d1117;
+    --glass: rgba(255, 255, 255, 0.04);
+    --glass-hover: rgba(255, 255, 255, 0.09);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-glow: rgba(255, 255, 255, 0.18);
+    --text: #e8edf4;
+    --muted: rgba(232, 237, 244, 0.45);
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --radius-card: 20px;
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --card-size: 148px;
+    --img-size: 56px;
+}
+
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════════
+   PARTICLE CANVAS
+═══════════════════════════════════════════════ */
+#bg-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════
+   HERO / HEADER
+═══════════════════════════════════════════════ */
+.hero {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Banner ── */
+.banner-wrap {
+    position: relative;
+    width: 100%;
+    height: clamp(160px, 28vw, 300px);
+    overflow: hidden;
+}
+
+.banner {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            transparent 30%,
+            rgba(4, 8, 15, 0.6) 75%,
+            var(--bg) 100%);
+}
+
+/* ── Profile ── */
+.profile {
+    position: absolute;
+    bottom: -64px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: max-content;
+    max-width: 90vw;
+}
+
+/* Spinning gradient ring around avatar */
+.avatar-ring {
+    position: relative;
+    width: 108px;
+    height: 108px;
+    margin: 0 auto;
+    border-radius: 50%;
+    padding: 4px;
+    background: conic-gradient(from 0deg,
+            var(--accent),
+            var(--accent2),
+            var(--accent),
+            var(--accent2),
+            var(--accent));
+    animation: spin-ring 6s linear infinite;
+}
+
+@keyframes spin-ring {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    background: var(--surface);
+    border: 3px solid var(--bg);
+    position: relative;
+    z-index: 1;
+}
+
+.display-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 4vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-top: 10px;
+    white-space: nowrap;
+    text-shadow: 0 2px 20px rgba(56, 189, 248, 0.3);
+}
+
+.tagline {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════
+   MAIN GRID
+═══════════════════════════════════════════════ */
+main {
+    position: relative;
+    z-index: 1;
+    padding: 0 clamp(16px, 5vw, 60px) 60px;
+}
+
+.grid {
+    /* Push content below the floating profile block */
+    margin-top: clamp(90px, 12vw, 110px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--card-size), 1fr));
+    gap: clamp(12px, 2.5vw, 22px);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ═══════════════════════════════════════════════
+   SOCIAL CARD
+═══════════════════════════════════════════════ */
+.card {
+    /* Glassmorphism surface */
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 24px 16px 20px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+    /* Subtle backdrop blur */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    /* Staggered entrance animation */
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+    transition:
+        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease,
+        opacity 0.4s ease;
+}
+
+/* Entrance keyframes (triggered from JS) */
+.card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Colour spotlight that follows the card's brand colour */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--card-color, transparent) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+/* Shine sweep on hover */
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(105deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.07) 50%,
+            transparent 60%);
+    transition: left 0.5s ease;
+    pointer-events: none;
+}
+
+.card:hover {
+    background: var(--glass-hover);
+    border-color: var(--border-glow);
+    box-shadow:
+        var(--shadow-card),
+        0 0 0 1px var(--border-glow),
+        0 0 30px rgba(56, 189, 248, 0.08);
+    transform: translateY(-6px) scale(1.03);
+}
+
+.card:hover::before {
+    opacity: 0.06;
+}
+
+.card:hover::after {
+    left: 140%;
+}
+
+.card:active {
+    transform: translateY(-2px) scale(1.01);
+    transition-duration: 0.1s;
+}
+
+/* ── Card Image ── */
+.card-img-wrap {
+    width: var(--img-size);
+    height: var(--img-size);
+    margin: 0 auto 14px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card:hover .card-img-wrap {
+    transform: scale(1.12) rotate(-2deg);
+}
+
+.card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+}
+
+/* ── Card Label ── */
+.card p {
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text);
+    transition: color 0.25s ease;
+}
+
+.card:hover p {
+    color: var(--accent);
+}
+
+/* ── Pill badge (bottom accent line) ── */
+.card-accent {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 50%;
+    height: 2px;
+    border-radius: 2px 2px 0 0;
+    background: var(--card-color, var(--accent));
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card:hover .card-accent {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* ═══════════════════════════════════════════════
+   MUSIC TOGGLE
+═══════════════════════════════════════════════ */
+#music-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+    color: var(--text);
+}
+
+#music-toggle:hover {
+    border-color: var(--border-glow);
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+    transform: scale(1.1);
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE TWEAKS
+═══════════════════════════════════════════════ */
+
+/* Landscape phones */
+@media (max-width: 600px) {
+    :root {
+        --card-size: 120px;
+        --img-size: 44px;
+    }
+
+    .banner-wrap {
+        height: 130px;
+    }
+
+    .avatar-ring {
+        width: 88px;
+        height: 88px;
+    }
+
+    .logo {
+        width: 80px;
+        height: 80px;
+    }
+
+    .profile {
+        bottom: -56px;
+    }
+
+    .grid {
+        margin-top: 80px;
+    }
+
+    .display-name {
+        font-size: 1.15rem;
+    }
+}
+
+/* Larger tablets / small desktops */
+@media (min-width: 900px) {
+    :root {
+        --card-size: 160px;
+        --img-size: 64px;
+    }
+}
+
+/* Wide / landscape mode: keep grid from stretching too wide */
+@media (min-width: 1200px) {
+    .grid {
+        max-width: 1000px;
+    }
+}
+
+/* Landscape orientation on mobile: tighten banner */
+@media (orientation: landscape) and (max-height: 500px) {
+    .banner-wrap {
+        height: 100px;
+    }
+
+    .profile {
+        bottom: -50px;
+    }
+
+    .grid {
+        margin-top: 72px;
+    }
+}
