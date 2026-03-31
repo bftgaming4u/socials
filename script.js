@@ -8,7 +8,7 @@
 ═══════════════════════════════════════════════ */
 const SOCIALS = [
     { name: "Discord", image: "discord.jpg", link: "https://discord.gg/fjNXpRHxhj", color: "#5865F2" },
-    { name: "YouTube", image: "youtube.png", link: "https://www.youtube.com/@BFTGaming4U", color: "#FF0000" },
+    { name: "YouTube", image: "youtube.png", link: "https://www.youtube.com/@BFTGaming4U?sub_confirmation=1", color: "#FF0000" },
     { name: "Twitch", image: "twitch.png", link: "https://www.twitch.tv/bftgaming4u", color: "#9146FF" },
     { name: "TikTok", image: "tiktok.png", link: "https://www.tiktok.com/@discoverieswidfun", color: "#010101" },
     { name: "Ko-fi", image: "kofi.png", link: "https://ko-fi.com/bftgaming4u", color: "#FF5E5B" },
