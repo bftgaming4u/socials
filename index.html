@@ -4,14 +4,63 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BFT Social Hub</title>
+    <title>BFT Gaming – Content Creator · Streamer · Community</title>
+
+    <!-- ── SEO ─────────────────────────────────────── -->
+    <meta name="description"
+        content="BFT Gaming – Your hub for streams, videos, and community. Join us on Discord, YouTube, Twitch, TikTok, and Instagram." />
+    <meta name="keywords"
+        content="BFT Gaming, BFTGaming4U, gaming streamer, YouTube gaming, Twitch streamer, Discord community, TikTok gaming" />
+    <meta name="author" content="BFT Gaming" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://yourdomain.com/" />
+
+    <!-- ── Open Graph (Facebook / Discord unfurl) ─── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourdomain.com/" />
+    <meta property="og:title" content="BFT Gaming – Content Creator · Streamer · Community" />
+    <meta property="og:description"
+        content="Your hub for streams, videos, and community. Join BFT Gaming on all platforms." />
+    <meta property="og:image" content="https://yourdomain.com/assets/banner.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="BFT Gaming" />
+
+    <!-- ── Twitter Card ──────────────────────────── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BFT Gaming – Content Creator · Streamer · Community" />
+    <meta name="twitter:description"
+        content="Your hub for streams, videos, and community. Join BFT Gaming on all platforms." />
+    <meta name="twitter:image" content="https://yourdomain.com/assets/banner.jpg" />
+
+    <!-- ── Structured Data (JSON-LD) ────────────── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "BFT Gaming",
+      "url": "https://yourdomain.com/",
+      "image": "https://yourdomain.com/assets/logo.jpg",
+      "description": "Content Creator, Streamer, and Community builder.",
+      "sameAs": [
+        "https://discord.gg/fjNXpRHxhj",
+        "https://www.youtube.com/@BFTGaming4U",
+        "https://www.twitch.tv/bftgaming4u",
+        "https://www.tiktok.com/@discoverieswidfun",
+        "https://www.instagram.com/bftgaming4u/",
+        "https://ko-fi.com/bftgaming4u"
+      ]
+    }
+    </script>
+
+    <!-- ── Fonts ──────────────────────────────────── -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/png" href="assets/favicon.png">
-
 </head>
 
 <body>
@@ -23,21 +72,21 @@
         <!--
       BANNER: Replace src with "assets/banner.png" when ready.
       Recommended size: 2048×1152 px.
-      The placeholder below keeps layout intact until then.
+      object-position: top ensures the top edge is always visible.
     -->
         <div class="banner-wrap">
-            <img id="banner-img" src="assets/banner.jpg" alt="Banner" class="banner"
+            <img id="banner-img" src="assets/banner.jpg" alt="BFT Gaming Banner" class="banner"
                 onerror="this.src='assets/banner_placeholder.svg'; this.onerror=null;" />
             <div class="banner-overlay"></div>
         </div>
 
         <!--
       LOGO: Replace src with "assets/logo.jpg" (or .png) when ready.
-      Recommended size: 98×98 px (will be displayed at exactly 98×98).
+      Recommended size: 120×120 px minimum.
     -->
         <div class="profile">
             <div class="avatar-ring">
-                <img id="logo-img" src="assets/logo.jpg" alt="Profile" class="logo"
+                <img id="logo-img" src="assets/logo.jpg" alt="BFT Gaming Logo" class="logo"
                     onerror="this.src='assets/logo_placeholder.svg'; this.onerror=null;" />
             </div>
             <h1 class="display-name">BFT Gaming</h1>
@@ -45,9 +94,27 @@
         </div>
     </header>
 
-    <!-- ── SOCIAL GRID ───────────────────────────────── -->
+    <!-- ── CONTENT ───────────────────────────────────── -->
     <main>
-        <div id="social-container" class="grid"></div>
+        <!-- Section: Socials -->
+        <div class="section-block">
+            <div class="section-label">
+                <span class="section-line"></span>
+                <span class="section-title">Socials</span>
+                <span class="section-line"></span>
+            </div>
+            <div id="social-container" class="grid"></div>
+        </div>
+
+        <!-- Section: Support Me -->
+        <div class="section-block">
+            <div class="section-label">
+                <span class="section-line"></span>
+                <span class="section-title">Support Me</span>
+                <span class="section-line"></span>
+            </div>
+            <div id="support-container" class="grid grid--centered"></div>
+        </div>
     </main>
 
     <!-- ── MUSIC TOGGLE ──────────────────────────────── -->

@@ -18,6 +18,13 @@
     --font-body: 'DM Sans', sans-serif;
     --card-size: 148px;
     --img-size: 56px;
+
+    /* Banner height: enough room to show content without cropping top */
+    --banner-h: clamp(180px, 30vw, 320px);
+    /* How far the avatar overlaps the banner bottom edge */
+    --avatar-overlap: 54px;
+    /* Avatar ring diameter */
+    --avatar-d: 108px;
 }
 
 /* ═══════════════════════════════════════════════
@@ -62,21 +69,26 @@ body {
 .hero {
     position: relative;
     z-index: 1;
+    /* Reserve space below banner for the overlapping profile block */
+    padding-bottom: calc(var(--avatar-d) / 2 + 56px);
 }
 
 /* ── Banner ── */
 .banner-wrap {
     position: relative;
     width: 100%;
-    height: clamp(160px, 28vw, 300px);
+    height: var(--banner-h);
     overflow: hidden;
+    /* Prevent any sub-pixel gap at the very top */
+    display: block;
 }
 
 .banner {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    /* Always anchor to the TOP so the top edge is never clipped */
+    object-position: top center;
     display: block;
 }
 
@@ -84,27 +96,32 @@ body {
     position: absolute;
     inset: 0;
     background: linear-gradient(to bottom,
-            transparent 30%,
-            rgba(4, 8, 15, 0.6) 75%,
+            transparent 20%,
+            rgba(4, 8, 15, 0.55) 70%,
             var(--bg) 100%);
 }
 
-/* ── Profile ── */
+/* ── Profile block ──
+   Sits half-inside the banner, half below it.
+   Uses a flex column so it stays centred on every viewport.
+─────────────────────────────────────────────── */
 .profile {
     position: absolute;
-    bottom: -64px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
     width: max-content;
     max-width: 90vw;
+    /* Translate upwards so the ring centre aligns with the banner bottom */
+    transform: translateX(-50%) translateY(calc(var(--avatar-d) / 2));
 }
 
 /* Spinning gradient ring around avatar */
 .avatar-ring {
     position: relative;
-    width: 108px;
-    height: 108px;
+    width: var(--avatar-d);
+    height: var(--avatar-d);
     margin: 0 auto;
     border-radius: 50%;
     padding: 4px;
@@ -124,8 +141,8 @@ body {
 }
 
 .logo {
-    width: 100px;
-    height: 100px;
+    width: calc(var(--avatar-d) - 8px);
+    height: calc(var(--avatar-d) - 8px);
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
@@ -141,7 +158,7 @@ body {
     font-size: clamp(1.3rem, 4vw, 1.9rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    margin-top: 10px;
+    margin-top: 12px;
     white-space: nowrap;
     text-shadow: 0 2px 20px rgba(56, 189, 248, 0.3);
 }
@@ -157,7 +174,7 @@ body {
 }
 
 /* ═══════════════════════════════════════════════
-   MAIN GRID
+   SECTION BLOCK & LABEL
 ═══════════════════════════════════════════════ */
 main {
     position: relative;
@@ -165,22 +182,76 @@ main {
     padding: 0 clamp(16px, 5vw, 60px) 60px;
 }
 
+.section-block {
+    max-width: 900px;
+    margin: 0 auto 8px;
+}
+
+/* Sleek label: two hairlines flanking the title */
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    /* First section gets top margin to push below the floating profile */
+    padding-top: clamp(88px, 12vw, 108px);
+}
+
+.section-block+.section-block .section-label {
+    /* Subsequent sections need less top space */
+    padding-top: clamp(32px, 5vw, 48px);
+}
+
+.section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right,
+            transparent,
+            var(--border-glow) 40%,
+            var(--border-glow) 60%,
+            transparent);
+}
+
+/* Reverse gradient direction for right line */
+.section-label .section-line:last-child {
+    background: linear-gradient(to left,
+            transparent,
+            var(--border-glow) 40%,
+            var(--border-glow) 60%,
+            transparent);
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    /* Subtle glow on the label text */
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+/* ═══════════════════════════════════════════════
+   GRID
+═══════════════════════════════════════════════ */
 .grid {
-    /* Push content below the floating profile block */
-    margin-top: clamp(90px, 12vw, 110px);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--card-size), 1fr));
     gap: clamp(12px, 2.5vw, 22px);
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
+}
+
+/* Support section: centre cards if there are only 1-2 */
+.grid--centered {
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(var(--card-size), var(--card-size)));
 }
 
 /* ═══════════════════════════════════════════════
    SOCIAL CARD
 ═══════════════════════════════════════════════ */
 .card {
-    /* Glassmorphism surface */
     background: var(--glass);
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
@@ -189,12 +260,10 @@ main {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-
-    /* Subtle backdrop blur */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 
-    /* Staggered entrance animation */
+    /* Staggered entrance */
     opacity: 0;
     transform: translateY(28px) scale(0.96);
     transition:
@@ -205,13 +274,12 @@ main {
         opacity 0.4s ease;
 }
 
-/* Entrance keyframes (triggered from JS) */
 .card.visible {
     opacity: 1;
     transform: translateY(0) scale(1);
 }
 
-/* Colour spotlight that follows the card's brand colour */
+/* Colour spotlight */
 .card::before {
     content: '';
     position: absolute;
@@ -223,7 +291,7 @@ main {
     pointer-events: none;
 }
 
-/* Shine sweep on hover */
+/* Shine sweep */
 .card::after {
     content: '';
     position: absolute;
@@ -303,7 +371,7 @@ main {
     color: var(--accent);
 }
 
-/* ── Pill badge (bottom accent line) ── */
+/* ── Bottom accent bar ── */
 .card-accent {
     position: absolute;
     bottom: 0;
@@ -354,41 +422,34 @@ main {
    RESPONSIVE TWEAKS
 ═══════════════════════════════════════════════ */
 
-/* Landscape phones */
+/* ── Small phones (portrait) ── */
+@media (max-width: 480px) {
+    :root {
+        --card-size: 120px;
+        --img-size: 44px;
+        --banner-h: 140px;
+        --avatar-d: 88px;
+        --avatar-overlap: 44px;
+    }
+
+    .section-label {
+        padding-top: 72px;
+    }
+
+    .display-name {
+        font-size: 1.1rem;
+    }
+}
+
+/* ── Phones up to 600px ── */
 @media (max-width: 600px) {
     :root {
         --card-size: 120px;
         --img-size: 44px;
     }
-
-    .banner-wrap {
-        height: 130px;
-    }
-
-    .avatar-ring {
-        width: 88px;
-        height: 88px;
-    }
-
-    .logo {
-        width: 80px;
-        height: 80px;
-    }
-
-    .profile {
-        bottom: -56px;
-    }
-
-    .grid {
-        margin-top: 80px;
-    }
-
-    .display-name {
-        font-size: 1.15rem;
-    }
 }
 
-/* Larger tablets / small desktops */
+/* ── Tablets / small desktops ── */
 @media (min-width: 900px) {
     :root {
         --card-size: 160px;
@@ -396,24 +457,36 @@ main {
     }
 }
 
-/* Wide / landscape mode: keep grid from stretching too wide */
+/* ── Wide desktops ── */
 @media (min-width: 1200px) {
-    .grid {
+    .section-block {
         max-width: 1000px;
     }
 }
 
-/* Landscape orientation on mobile: tighten banner */
+/* ── Landscape on mobile (short viewports) ── */
 @media (orientation: landscape) and (max-height: 500px) {
-    .banner-wrap {
-        height: 100px;
+    :root {
+        --banner-h: 110px;
+        --avatar-d: 80px;
     }
 
-    .profile {
-        bottom: -50px;
+    .section-label {
+        padding-top: 60px;
     }
 
-    .grid {
-        margin-top: 72px;
+    .display-name {
+        font-size: 1rem;
+    }
+
+    .tagline {
+        font-size: 0.68rem;
+    }
+}
+
+/* ── Landscape on mid-size tablets ── */
+@media (orientation: landscape) and (min-height: 500px) and (max-height: 700px) {
+    :root {
+        --banner-h: clamp(130px, 22vw, 200px);
     }
 }

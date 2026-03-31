@@ -1,22 +1,25 @@
 /* ═══════════════════════════════════════════════
    SOCIAL CARDS
-   To add/remove a social link, edit the SOCIALS
-   array below. Each entry needs:
-     { "name", "image", "link", "color" }
-   - image: filename inside /assets/ (e.g. "discord.png")
-   - color: hex brand colour used for hover accent glow
+   Edit SOCIALS for your social platform links.
+   Edit SUPPORT for donation / support links.
+   Each entry: { "name", "image", "link", "color" }
 ═══════════════════════════════════════════════ */
 const SOCIALS = [
     { name: "Discord", image: "discord.jpg", link: "https://discord.gg/fjNXpRHxhj", color: "#5865F2" },
     { name: "YouTube", image: "youtube.png", link: "https://www.youtube.com/@BFTGaming4U?sub_confirmation=1", color: "#FF0000" },
     { name: "Twitch", image: "twitch.png", link: "https://www.twitch.tv/bftgaming4u", color: "#9146FF" },
-    { name: "TikTok", image: "tiktok.png", link: "https://www.tiktok.com/@discoverieswidfun", color: "#010101" },
-    { name: "Ko-fi", image: "kofi.png", link: "https://ko-fi.com/bftgaming4u", color: "#FF5E5B" },
+    { name: "TikTok", image: "tiktok.png", link: "https://www.tiktok.com/@discoverieswidfun", color: "#69C9D0" },
     { name: "Instagram", image: "instagram.png", link: "https://www.instagram.com/bftgaming4u/", color: "#E1306C" },
 ];
 
-(function (data) {
-    const container = document.getElementById('social-container');
+const SUPPORT = [
+    { name: "Ko-fi", image: "kofi.png", link: "https://ko-fi.com/bftgaming4u", color: "#FF5E5B" },
+];
+
+/* ── Card builder ─────────────────────────────── */
+function buildCards(data, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
     data.forEach((item, i) => {
         const card = document.createElement('div');
@@ -51,23 +54,26 @@ const SOCIALS = [
 
         container.appendChild(card);
     });
+}
 
-    /* Staggered entrance: use IntersectionObserver if available */
-    if ('IntersectionObserver' in window) {
-        const obs = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
+buildCards(SOCIALS, 'social-container');
+buildCards(SUPPORT, 'support-container');
 
-        document.querySelectorAll('.card').forEach(c => obs.observe(c));
-    } else {
-        document.querySelectorAll('.card').forEach(c => c.classList.add('visible'));
-    }
-})(SOCIALS);
+/* ── Staggered entrance ───────────────────────── */
+if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.card').forEach(c => obs.observe(c));
+} else {
+    document.querySelectorAll('.card').forEach(c => c.classList.add('visible'));
+}
 
 
 /* ═══════════════════════════════════════════════
@@ -96,7 +102,7 @@ toggle.addEventListener('click', () => {
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 
-let W, H, particles, lines;
+let W, H, particles;
 
 function resize() {
     W = canvas.width = window.innerWidth;
@@ -118,13 +124,11 @@ function buildParticles() {
 resize();
 window.addEventListener('resize', resize);
 
-/* Palette: cool-blue dots with occasional violet */
 const COLORS = ['#38bdf8', '#38bdf8', '#38bdf8', '#818cf8', '#67e8f9'];
 
 function animate() {
     ctx.clearRect(0, 0, W, H);
 
-    /* Draw connecting lines between nearby particles */
     const MAX_DIST = 130;
     for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -142,7 +146,6 @@ function animate() {
         }
     }
 
-    /* Draw particles */
     particles.forEach((p, idx) => {
         p.x += p.vx;
         p.y += p.vy;
