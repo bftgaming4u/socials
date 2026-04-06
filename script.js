@@ -14,6 +14,7 @@ const SOCIALS = [
 
 const SUPPORT = [
     { name: "Ko-fi", image: "kofi.png", link: "https://ko-fi.com/bftgaming4u", color: "#FF5E5B" },
+    { name: "Throne", image: "throne.jpg", link: "https://throne.com/bftgaming4u", color: "#6e7af8" },
 ];
 
 /* ── Card builder ─────────────────────────────── */
