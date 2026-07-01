@@ -10,6 +10,7 @@ const SOCIALS = [
     { name: "Twitch", image: "twitch.png", link: "https://www.twitch.tv/bftgaming4u", color: "#9146FF" },
     { name: "TikTok", image: "tiktok.png", link: "https://www.tiktok.com/@discoverieswidfun", color: "#69C9D0" },
     { name: "Instagram", image: "instagram.png", link: "https://www.instagram.com/bftgaming4u/", color: "#E1306C" },
+    { name: "Kick", image: "kick.png", link: "https://kick.com/bftgaming4u", color: "#E1306C" },
 ];
 
 const SUPPORT = [
